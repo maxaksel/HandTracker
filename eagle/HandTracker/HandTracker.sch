@@ -3728,6 +3728,11 @@ Surface Mount Version &lt;a href="https://www.digikey.com/en/products/detail/te-
 <part name="JP1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X4" device="/90" package3d_urn="urn:adsk.eagle:package:22404/2"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3789,6 +3794,21 @@ Surface Mount Version &lt;a href="https://www.digikey.com/en/products/detail/te-
 <instance part="P+3" gate="VCC" x="60.96" y="-50.8" smashed="yes">
 <attribute name="VALUE" x="58.42" y="-53.34" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="P+4" gate="VCC" x="119.38" y="76.2" smashed="yes">
+<attribute name="VALUE" x="116.84" y="73.66" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND5" gate="1" x="119.38" y="58.42" smashed="yes">
+<attribute name="VALUE" x="116.84" y="55.88" size="1.778" layer="96"/>
+</instance>
+<instance part="P+5" gate="VCC" x="2.54" y="-25.4" smashed="yes">
+<attribute name="VALUE" x="0" y="-27.94" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="P+6" gate="VCC" x="-76.2" y="-27.94" smashed="yes">
+<attribute name="VALUE" x="-78.74" y="-30.48" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND6" gate="1" x="2.54" y="-60.96" smashed="yes">
+<attribute name="VALUE" x="0" y="-63.5" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -3820,6 +3840,42 @@ Surface Mount Version &lt;a href="https://www.digikey.com/en/products/detail/te-
 <wire x1="58.42" y1="-58.42" x2="58.42" y2="-73.66" width="0.1524" layer="91"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 </segment>
+<segment>
+<pinref part="U2" gate="A" pin="GND"/>
+<wire x1="86.36" y1="66.04" x2="119.38" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="66.04" x2="119.38" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="GND"/>
+<wire x1="-7.62" y1="-38.1" x2="2.54" y2="-38.1" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-38.1" x2="2.54" y2="-40.64" width="0.1524" layer="91"/>
+<pinref part="U1" gate="A" pin="GND_2"/>
+<wire x1="-7.62" y1="-40.64" x2="2.54" y2="-40.64" width="0.1524" layer="91"/>
+<junction x="2.54" y="-40.64"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+<wire x1="2.54" y1="-40.64" x2="2.54" y2="-43.18" width="0.1524" layer="91"/>
+<pinref part="U1" gate="A" pin="RES_2"/>
+<wire x1="2.54" y1="-43.18" x2="2.54" y2="-45.72" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-45.72" x2="2.54" y2="-48.26" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-48.26" x2="2.54" y2="-50.8" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-50.8" x2="2.54" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-53.34" x2="2.54" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="-7.62" y1="-53.34" x2="2.54" y2="-53.34" width="0.1524" layer="91"/>
+<junction x="2.54" y="-53.34"/>
+<pinref part="U1" gate="A" pin="RES_3"/>
+<wire x1="-7.62" y1="-50.8" x2="2.54" y2="-50.8" width="0.1524" layer="91"/>
+<junction x="2.54" y="-50.8"/>
+<pinref part="U1" gate="A" pin="RES_4"/>
+<wire x1="-7.62" y1="-48.26" x2="2.54" y2="-48.26" width="0.1524" layer="91"/>
+<junction x="2.54" y="-48.26"/>
+<pinref part="U1" gate="A" pin="RES_5"/>
+<wire x1="-7.62" y1="-45.72" x2="2.54" y2="-45.72" width="0.1524" layer="91"/>
+<junction x="2.54" y="-45.72"/>
+<pinref part="U1" gate="A" pin="RES"/>
+<wire x1="-7.62" y1="-43.18" x2="2.54" y2="-43.18" width="0.1524" layer="91"/>
+<junction x="2.54" y="-43.18"/>
+</segment>
 </net>
 <net name="N$3" class="0">
 <segment>
@@ -3850,6 +3906,38 @@ Surface Mount Version &lt;a href="https://www.digikey.com/en/products/detail/te-
 <wire x1="60.96" y1="-53.34" x2="60.96" y2="-60.96" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="A" pin="2"/>
 <wire x1="60.96" y1="-60.96" x2="76.2" y2="-60.96" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U2" gate="A" pin="VDD"/>
+<wire x1="86.36" y1="68.58" x2="93.98" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="93.98" y1="68.58" x2="119.38" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="68.58" x2="119.38" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="93.98" y1="68.58" x2="93.98" y2="63.5" width="0.1524" layer="91"/>
+<junction x="93.98" y="68.58"/>
+<pinref part="U2" gate="A" pin="REF"/>
+<wire x1="93.98" y1="63.5" x2="86.36" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="P+4" gate="VCC" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="VDDIO"/>
+<wire x1="-63.5" y1="-33.02" x2="-71.12" y2="-33.02" width="0.1524" layer="91"/>
+<wire x1="-71.12" y1="-33.02" x2="-76.2" y2="-33.02" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="-33.02" x2="-76.2" y2="-30.48" width="0.1524" layer="91"/>
+<pinref part="P+6" gate="VCC" pin="VCC"/>
+<pinref part="U1" gate="A" pin="VDDIO_2"/>
+<wire x1="-63.5" y1="-27.94" x2="-71.12" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="-71.12" y1="-27.94" x2="-71.12" y2="-33.02" width="0.1524" layer="91"/>
+<junction x="-71.12" y="-33.02"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="VDD_2"/>
+<wire x1="-7.62" y1="-33.02" x2="2.54" y2="-33.02" width="0.1524" layer="91"/>
+<pinref part="P+5" gate="VCC" pin="VCC"/>
+<wire x1="2.54" y1="-33.02" x2="2.54" y2="-30.48" width="0.1524" layer="91"/>
+<pinref part="U1" gate="A" pin="VDD"/>
+<wire x1="2.54" y1="-30.48" x2="2.54" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="-7.62" y1="-30.48" x2="2.54" y2="-30.48" width="0.1524" layer="91"/>
+<junction x="2.54" y="-30.48"/>
 </segment>
 </net>
 <net name="D-" class="0">
@@ -3888,6 +3976,83 @@ Surface Mount Version &lt;a href="https://www.digikey.com/en/products/detail/te-
 <pinref part="U$1" gate="G$1" pin="17"/>
 <wire x1="78.74" y1="-17.78" x2="81.28" y2="-17.78" width="0.1524" layer="91"/>
 <label x="81.28" y="-17.78" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="SCLK" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="7"/>
+<wire x1="30.48" y1="-25.4" x2="27.94" y2="-25.4" width="0.1524" layer="91"/>
+<label x="25.4" y="-25.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U2" gate="A" pin="SCLK"/>
+<wire x1="86.36" y1="73.66" x2="88.9" y2="73.66" width="0.1524" layer="91"/>
+<label x="88.9" y="73.66" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="SCL/SPC"/>
+<wire x1="-63.5" y1="-30.48" x2="-66.04" y2="-30.48" width="0.1524" layer="91"/>
+<label x="-68.58" y="-30.48" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="MISO" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="14"/>
+<wire x1="78.74" y1="-25.4" x2="81.28" y2="-25.4" width="0.1524" layer="91"/>
+<label x="81.28" y="-25.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U2" gate="A" pin="DOUT"/>
+<wire x1="86.36" y1="78.74" x2="88.9" y2="78.74" width="0.1524" layer="91"/>
+<label x="88.9" y="78.74" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="SDO_M"/>
+<wire x1="-63.5" y1="-40.64" x2="-66.04" y2="-40.64" width="0.1524" layer="91"/>
+<label x="-68.58" y="-40.64" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="SDO_A/G"/>
+<wire x1="-63.5" y1="-38.1" x2="-66.04" y2="-38.1" width="0.1524" layer="91"/>
+<label x="-68.58" y="-38.1" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="MOSI" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="15"/>
+<wire x1="78.74" y1="-22.86" x2="81.28" y2="-22.86" width="0.1524" layer="91"/>
+<label x="81.28" y="-22.86" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U2" gate="A" pin="DIN"/>
+<wire x1="86.36" y1="76.2" x2="88.9" y2="76.2" width="0.1524" layer="91"/>
+<label x="88.9" y="76.2" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="SDA/SDI/SDO"/>
+<wire x1="-63.5" y1="-35.56" x2="-66.04" y2="-35.56" width="0.1524" layer="91"/>
+<label x="-68.58" y="-35.56" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CSA" class="0">
+<segment>
+<pinref part="U2" gate="A" pin="!CS"/>
+<wire x1="86.36" y1="71.12" x2="88.9" y2="71.12" width="0.1524" layer="91"/>
+<label x="88.9" y="71.12" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CSAG" class="0">
+<segment>
+<pinref part="U1" gate="A" pin="CS_A/G"/>
+<wire x1="-63.5" y1="-43.18" x2="-66.04" y2="-43.18" width="0.1524" layer="91"/>
+<label x="-68.58" y="-43.18" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CSM" class="0">
+<segment>
+<pinref part="U1" gate="A" pin="CS_M"/>
+<wire x1="-63.5" y1="-45.72" x2="-66.04" y2="-45.72" width="0.1524" layer="91"/>
+<label x="-68.58" y="-45.72" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
