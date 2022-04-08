@@ -11709,13 +11709,15 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <part name="GND12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
-<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="47k"/>
+<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="10k"/>
 <part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="U$2" library="RGB LED" deviceset="NTE30158" device=""/>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
 <part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
 <part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
+<part name="C9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C1206" package3d_urn="urn:adsk.eagle:package:23618/2" value="10nF"/>
+<part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11926,6 +11928,13 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <attribute name="NAME" x="173.7614" y="6.35" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="178.562" y="6.35" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="C9" gate="G$1" x="10.16" y="-38.1" smashed="yes">
+<attribute name="NAME" x="11.176" y="-37.465" size="1.778" layer="95"/>
+<attribute name="VALUE" x="11.176" y="-42.291" size="1.778" layer="96"/>
+</instance>
+<instance part="GND15" gate="1" x="10.16" y="-48.26" smashed="yes">
+<attribute name="VALUE" x="7.62" y="-50.8" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -12093,6 +12102,11 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="177.8" y1="60.96" x2="165.1" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="U$2" gate="G$1" pin="CATHODE"/>
 <wire x1="165.1" y1="60.96" x2="165.1" y2="53.34" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C9" gate="G$1" pin="2"/>
+<wire x1="10.16" y1="-43.18" x2="10.16" y2="-45.72" width="0.1524" layer="91"/>
+<pinref part="GND15" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="VBUS" class="0">
@@ -12591,6 +12605,13 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="-43.18" y1="45.72" x2="-30.48" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="-30.48" y1="45.72" x2="-30.48" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="N$6" class="0">
+<segment>
+<pinref part="C9" gate="G$1" pin="1"/>
+<pinref part="U1" gate="A" pin="CAP"/>
+<wire x1="10.16" y1="-35.56" x2="-7.62" y2="-35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
