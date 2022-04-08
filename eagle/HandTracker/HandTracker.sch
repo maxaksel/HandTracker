@@ -11602,6 +11602,51 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 </deviceset>
 </devicesets>
 </library>
+<library name="RGB LED">
+<packages>
+<package name="NTE30158">
+<pad name="P$1" x="0" y="0" drill="0.5"/>
+<pad name="P$2" x="1.27" y="0" drill="0.5"/>
+<pad name="P$3" x="2.54" y="0" drill="0.5"/>
+<pad name="P$4" x="3.81" y="0" drill="0.5"/>
+</package>
+</packages>
+<symbols>
+<symbol name="COMMON_CATHODE">
+<wire x1="0" y1="0" x2="0" y2="20.32" width="0.254" layer="94"/>
+<pin name="RED" x="7.62" y="-5.08" length="middle" rot="R90"/>
+<pin name="GREEN" x="17.78" y="-5.08" length="middle" rot="R90"/>
+<pin name="BLUE" x="27.94" y="-5.08" length="middle" rot="R90"/>
+<wire x1="35.56" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="35.56" y1="0" x2="35.56" y2="20.32" width="0.254" layer="94"/>
+<pin name="CATHODE" x="17.78" y="30.48" length="middle" rot="R270"/>
+<wire x1="0" y1="20.32" x2="0" y2="25.4" width="0.254" layer="94"/>
+<wire x1="0" y1="25.4" x2="35.56" y2="25.4" width="0.254" layer="94"/>
+<wire x1="35.56" y1="25.4" x2="35.56" y2="20.32" width="0.254" layer="94"/>
+<text x="-2.54" y="2.54" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="NTE30158">
+<gates>
+<gate name="G$1" symbol="COMMON_CATHODE" x="-17.78" y="-12.7"/>
+</gates>
+<devices>
+<device name="" package="NTE30158">
+<connects>
+<connect gate="G$1" pin="BLUE" pad="P$1"/>
+<connect gate="G$1" pin="CATHODE" pad="P$3"/>
+<connect gate="G$1" pin="GREEN" pad="P$2"/>
+<connect gate="G$1" pin="RED" pad="P$4"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -11666,6 +11711,11 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="47k"/>
 <part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="U$2" library="RGB LED" deviceset="NTE30158" device=""/>
+<part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="R9" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
+<part name="R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
+<part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="220"/>
 </parts>
 <sheets>
 <sheet>
@@ -11858,6 +11908,24 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <instance part="P+13" gate="VCC" x="-30.48" y="63.5" smashed="yes">
 <attribute name="VALUE" x="-33.02" y="60.96" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="U$2" gate="G$1" x="147.32" y="22.86" smashed="yes">
+<attribute name="NAME" x="144.78" y="25.4" size="1.778" layer="95" rot="R90"/>
+</instance>
+<instance part="GND14" gate="1" x="177.8" y="53.34" smashed="yes">
+<attribute name="VALUE" x="175.26" y="50.8" size="1.778" layer="96"/>
+</instance>
+<instance part="R9" gate="G$1" x="154.94" y="10.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="153.4414" y="6.35" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="158.242" y="6.35" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R10" gate="G$1" x="165.1" y="10.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="163.6014" y="6.35" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="168.402" y="6.35" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R11" gate="G$1" x="175.26" y="10.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="173.7614" y="6.35" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="178.562" y="6.35" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -12018,6 +12086,13 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="-43.18" y1="38.1" x2="-38.1" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="38.1" x2="-38.1" y2="33.02" width="0.1524" layer="91"/>
 <junction x="-38.1" y="33.02"/>
+</segment>
+<segment>
+<pinref part="GND14" gate="1" pin="GND"/>
+<wire x1="177.8" y1="55.88" x2="177.8" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="177.8" y1="60.96" x2="165.1" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="CATHODE"/>
+<wire x1="165.1" y1="60.96" x2="165.1" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VBUS" class="0">
@@ -12424,6 +12499,16 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="78.74" y1="-27.94" x2="81.28" y2="-27.94" width="0.1524" layer="91"/>
 <label x="81.28" y="-27.94" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="RED"/>
+<wire x1="154.94" y1="17.78" x2="154.94" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="2"/>
+</segment>
+<segment>
+<pinref part="R9" gate="G$1" pin="1"/>
+<wire x1="154.94" y1="5.08" x2="154.94" y2="2.54" width="0.1524" layer="91"/>
+<label x="154.94" y="2.54" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="GLED" class="0">
 <segment>
@@ -12431,12 +12516,32 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="78.74" y1="-30.48" x2="81.28" y2="-30.48" width="0.1524" layer="91"/>
 <label x="81.28" y="-30.48" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="GREEN"/>
+<wire x1="165.1" y1="17.78" x2="165.1" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R10" gate="G$1" pin="2"/>
+</segment>
+<segment>
+<pinref part="R10" gate="G$1" pin="1"/>
+<wire x1="165.1" y1="5.08" x2="165.1" y2="2.54" width="0.1524" layer="91"/>
+<label x="165.1" y="2.54" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="BLED" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="10"/>
 <wire x1="30.48" y1="-33.02" x2="27.94" y2="-33.02" width="0.1524" layer="91"/>
 <label x="25.4" y="-33.02" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="BLUE"/>
+<wire x1="175.26" y1="17.78" x2="175.26" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R11" gate="G$1" pin="2"/>
+</segment>
+<segment>
+<pinref part="R11" gate="G$1" pin="1"/>
+<wire x1="175.26" y1="5.08" x2="175.26" y2="2.54" width="0.1524" layer="91"/>
+<label x="175.26" y="2.54" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SW1" class="0">
