@@ -11681,8 +11681,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-US" device="C1206" package3d_urn="urn:adsk.eagle:package:23618/2" value="100nF"/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="22"/>
-<part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="22'"/>
 <part name="JP2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X10" device="" package3d_urn="urn:adsk.eagle:package:22406/2"/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-US_" device="R1206" package3d_urn="urn:adsk.eagle:package:23540/2" value="47k"/>
@@ -11803,14 +11801,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 </instance>
 <instance part="GND8" gate="1" x="-5.08" y="-22.86" smashed="yes">
 <attribute name="VALUE" x="-7.62" y="-25.4" size="1.778" layer="96"/>
-</instance>
-<instance part="R1" gate="G$1" x="114.3" y="-48.26" smashed="yes">
-<attribute name="NAME" x="110.49" y="-46.7614" size="1.778" layer="95"/>
-<attribute name="VALUE" x="110.49" y="-51.562" size="1.778" layer="96"/>
-</instance>
-<instance part="R2" gate="G$1" x="114.3" y="-40.64" smashed="yes">
-<attribute name="NAME" x="110.49" y="-39.1414" size="1.778" layer="95"/>
-<attribute name="VALUE" x="110.49" y="-43.942" size="1.778" layer="96"/>
 </instance>
 <instance part="JP2" gate="A" x="33.02" y="109.22" smashed="yes">
 <attribute name="NAME" x="26.67" y="122.555" size="1.778" layer="95"/>
@@ -12227,9 +12217,9 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 </net>
 <net name="D-" class="0">
 <segment>
-<pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="109.22" y1="-40.64" x2="104.14" y2="-40.64" width="0.1524" layer="91"/>
 <label x="104.14" y="-40.64" size="1.778" layer="95"/>
+<pinref part="J1" gate="A" pin="D-"/>
+<wire x1="104.14" y1="-40.64" x2="142.24" y2="-40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="1" pin="USBDM"/>
@@ -12239,9 +12229,11 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 </net>
 <net name="D+" class="0">
 <segment>
-<pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="109.22" y1="-48.26" x2="104.14" y2="-48.26" width="0.1524" layer="91"/>
 <label x="104.14" y="-48.26" size="1.778" layer="95"/>
+<pinref part="J1" gate="A" pin="D+"/>
+<wire x1="124.46" y1="-48.26" x2="124.46" y2="-43.18" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="-43.18" x2="142.24" y2="-43.18" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="-48.26" x2="124.46" y2="-48.26" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="1" pin="USBDP"/>
@@ -12404,22 +12396,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="-10.16" y1="-22.86" x2="-10.16" y2="-10.16" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="1"/>
 <wire x1="-10.16" y1="-10.16" x2="-5.08" y2="-10.16" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$2" class="0">
-<segment>
-<pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="119.38" y1="-48.26" x2="124.46" y2="-48.26" width="0.1524" layer="91"/>
-<pinref part="J1" gate="A" pin="D+"/>
-<wire x1="124.46" y1="-48.26" x2="124.46" y2="-43.18" width="0.1524" layer="91"/>
-<wire x1="124.46" y1="-43.18" x2="142.24" y2="-43.18" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="R2" gate="G$1" pin="2"/>
-<pinref part="J1" gate="A" pin="D-"/>
-<wire x1="119.38" y1="-40.64" x2="142.24" y2="-40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="FLEX1" class="0">
