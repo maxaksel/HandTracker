@@ -12367,6 +12367,11 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <wire x1="-7.62" y1="-55.88" x2="-5.08" y2="-55.88" width="0.1524" layer="91"/>
 <label x="-10.16" y="-58.42" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="2"/>
+<wire x1="30.48" y1="-12.7" x2="27.94" y2="-12.7" width="0.1524" layer="91"/>
+<label x="22.86" y="-12.7" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
@@ -12470,11 +12475,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <label x="81.28" y="-27.94" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="RED"/>
-<wire x1="154.94" y1="17.78" x2="154.94" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="R9" gate="G$1" pin="2"/>
-</segment>
-<segment>
 <pinref part="R9" gate="G$1" pin="1"/>
 <wire x1="154.94" y1="5.08" x2="154.94" y2="2.54" width="0.1524" layer="91"/>
 <label x="154.94" y="2.54" size="1.778" layer="95"/>
@@ -12487,11 +12487,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <label x="81.28" y="-30.48" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="GREEN"/>
-<wire x1="165.1" y1="17.78" x2="165.1" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="R10" gate="G$1" pin="2"/>
-</segment>
-<segment>
 <pinref part="R10" gate="G$1" pin="1"/>
 <wire x1="165.1" y1="5.08" x2="165.1" y2="2.54" width="0.1524" layer="91"/>
 <label x="165.1" y="2.54" size="1.778" layer="95"/>
@@ -12502,11 +12497,6 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <pinref part="U$1" gate="G$1" pin="10"/>
 <wire x1="30.48" y1="-33.02" x2="27.94" y2="-33.02" width="0.1524" layer="91"/>
 <label x="25.4" y="-33.02" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="U$2" gate="G$1" pin="BLUE"/>
-<wire x1="175.26" y1="17.78" x2="175.26" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="R11" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="R11" gate="G$1" pin="1"/>
@@ -12568,6 +12558,30 @@ Source: http://www.ftdichip.com/Documents/DataSheets/DS_FT232R_v104.pdf</descrip
 <pinref part="C9" gate="G$1" pin="1"/>
 <pinref part="U1" gate="A" pin="CAP"/>
 <wire x1="10.16" y1="-35.56" x2="-7.62" y2="-35.56" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="RLED_RES" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="RED"/>
+<wire x1="154.94" y1="17.78" x2="154.94" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="2"/>
+<label x="149.86" y="10.16" size="1.778" layer="95" rot="R90"/>
+</segment>
+</net>
+<net name="GLED_RES" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="GREEN"/>
+<wire x1="165.1" y1="17.78" x2="165.1" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R10" gate="G$1" pin="2"/>
+<label x="162.56" y="10.16" size="1.778" layer="95" rot="R90"/>
+</segment>
+</net>
+<net name="BLED_RES" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="BLUE"/>
+<wire x1="175.26" y1="17.78" x2="175.26" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="R11" gate="G$1" pin="2"/>
+<label x="172.72" y="10.16" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 </nets>
