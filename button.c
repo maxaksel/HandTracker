@@ -75,7 +75,7 @@ int get_button_pressed() {
 /**
  * Button interrupt service routine.
  * Sets values of inputs array according to button inputs.
- * Sets appropriate LED value.
+ * Sets appropriate LED value. Add code here to modify ISR.
  */
 #if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT1_VECTOR

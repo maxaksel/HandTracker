@@ -1,4 +1,4 @@
-/*
+/**
  * Library for interfacing with LSM9DS1 accelerometer and gyro.
  *
  * @date 04/22/2022
