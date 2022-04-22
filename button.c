@@ -69,7 +69,7 @@ int get_button_pressed() {
 
     if (sw1) return 1;
     else if (sw2) return 2;
-    return -1; // if no button pressed
+    return 0; // if no button pressed
 }
 
 /**
