@@ -7,6 +7,14 @@
 
 #include "spi.h"
 
+static bool async;
+static uint8_t *txbuf;
+static uint8_t *rxbuf;
+static int tx_loc;
+static int rx_loc;
+static int data_size;
+
+
 
 int spi_init(void){
 
@@ -33,15 +41,19 @@ int spi_init(void){
 
     UCB0CTL1 &= ~0b00000001; //Clear USB0WRST
 
+    IE2 &= ~(BIT2 + BIT3);
 
-    //enable interrupts
-
-        //NOT YET
+    async = 0; //not in any operating mode
+    tx_loc = 0;
+    rx_loc = 0;
+    data_size = 0;
 
     return 0;
 }
 
 uint8_t spi_send_receive_byte(uint8_t byte){
+
+    IE2 &= ~(BIT2 + BIT3);
 
     while( (UCB0STAT & 0x01) ); //wait while busy
 
@@ -55,6 +67,8 @@ uint8_t spi_send_receive_byte(uint8_t byte){
 
 
 uint16_t spi_send_receive_two_bytes(uint16_t data){
+
+    IE2 &= ~(BIT2 + BIT3);
 
     uint16_t retval;
 
@@ -77,16 +91,105 @@ uint16_t spi_send_receive_two_bytes(uint16_t data){
 
     retval |= (0xFF & UCB0RXBUF); //set lsb's
 
-
-
     return retval; //read and return buffer value
-
-
-
-
 
 }
 
 int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_bytes){
+    int i; //counter
+
+    IE2 &= ~(BIT2 + BIT3);
+
+    if(async)
+        return -1;
+
+    while( (UCB0STAT & 0x01) ); //wait until not busy
+
+    (void) (UCB0RXBUF); //clear RX buffer
+
+    UCB0TXBUF = *data_send;
+
+    for(i = 0; i < num_bytes; i++){
+        while(!(IFG2 & BIT3)); //wait for TXB flag
+        if(i != num_bytes - 1){
+            UCB0TXBUF = data_send[i]; //send ith byte
+        }
+        while(!(IFG2 & BIT2)); //wait for RXB flag
+        data_receive[i] = 0xFF & UCB0RXBUF; //read byte to buffer
+    }
+
     return 0;
+
 }
+
+
+int spi_start_asynch_transmission(uint8_t *data_send, uint8_t *data_receive, int num_bytes){
+
+    if((tx_loc != data_size) || (rx_loc != data_size))
+        return -1; //UCB0 busy with another transmission
+
+    async = true;
+
+    (void) (UCB0RXBUF); //clear RX buffer
+    (void) (UCB0RXBUF); //clear RX buffer
+
+    while( (UCB0STAT & 0x01) ); //wait until not busy
+
+    async_done = false; //indicate that transmission has started but not yet completed
+
+    // initialize internal veriables
+    txbuf = data_send;
+    rxbuf = data_receive;
+    tx_loc = 0;
+    rx_loc = 0;
+    data_size = num_bytes;
+
+    IFG2 &= ~(BIT2 + BIT3); //clear interrupt flags
+    IE2 |= (BIT2 + BIT3); //enable interrupts
+
+    UCB0TXBUF = txbuf[tx_loc++]; //put first byte in queue
+
+    __bis_SR_register(GIE); //set GIE
+
+    return 0; //successfully initialized transmission
+}
+
+
+//TXISR
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#pragma vector = USCIAB0TX_VECTOR
+__interrupt void USCIAB0TX_ISR(void)
+#elif defined(__GNUC__)
+void __attribute__ ((interrupt(USCIAB0TX_VECTOR))) USCIAB0TX_ISR (void)
+#else
+#error Compiler not supported!
+#endif
+{
+    if(tx_loc != data_size){
+        UCB0TXBUF = txbuf[tx_loc++]; //write byte to buffer
+    }
+}
+
+//RXISR
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#pragma vector = USCIAB0RX_VECTOR
+__interrupt void USCIAB0RX_ISR(void)
+#elif defined(__GNUC__)
+void __attribute__ ((interrupt(USCIAB0RX_VECTOR))) USCIAB0RX_ISR (void)
+#else
+#error Compiler not supported!
+#endif
+{
+    if(rx_loc != data_size){
+        rxbuf[rx_loc++] = UCB0RXBUF; //read byte from buffer
+    }
+    if(rx_loc == data_size){
+        async_done = true; //indicate that transmission was completed
+    }
+}
+
+
+
+
+
+
