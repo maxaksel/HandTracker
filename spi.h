@@ -13,6 +13,20 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+volatile bool async_done;
+
+uint8_t *txbuf;
+
+uint8_t *rxbuf;
+
+int tx_loc;
+
+int rx_loc;
+
+int data_size;
+
+
+
 /**
  * This value is set to true when an asynchronous spi transmission has been completed (all num_bytes sent/received)
  */

@@ -7,20 +7,6 @@
 
 #include <uart.h>
 
-static uint8_t tx_buffer[UART_BUFFER_DEPTH];
-
-static uint8_t rx_buffer[UART_BUFFER_DEPTH];
-
-static int tx_level;
-
-static int rx_level;
-
-static uint8_t *tx_top;
-
-static uint8_t *rx_top;
-
-
-
 
 
 
@@ -39,7 +25,7 @@ void uart_init(){
     rx_level = 0;
 
     tx_top = tx_buffer;
-    rx_top = rx_buffer;
+    rx_bottom = rx_buffer + UART_BUFFER_DEPTH - 1;
 
     //initialize uart module
 
@@ -50,19 +36,23 @@ void uart_init(){
     UCA0BR0 = 0x09;
     UCA0BR1 = 0x00;
 
+    //select alternate function
 
+    P1SEL |= (BIT1 + BIT2);
+    P1SEL2 |= (BIT1 + BIT2);
 
     //initialize pins as input
 
+    P1DIR |= BIT2; //set TXD to output
+    P1DIR &= ~BIT1; //set RXD to input
 
-
-    //select alternate function
-
-    //clear interrupts
+    //clear interrupt flags
     IFG2 &= ~(BIT0 + BIT1);
 
     //enable interrupts
     IE2 |= (BIT0 + BIT1);
+
+    __bis_SR_register(GIE); //enable global interrupts
 
 
 
@@ -99,7 +89,10 @@ int uart_rx_buffer_level(){
  *  Empties the uart transmit buffer
  *
  */
-int uart_clear_tx_buffer();
+int uart_clear_tx_buffer(){
+    tx_level = 0;
+    return 0;
+}
 
 /**
  * Requires:
@@ -109,28 +102,10 @@ int uart_clear_tx_buffer();
  *      Empties the uart receive buffer
  *
  */
-int uart_clear_rx_buffer();
-
-
-/**
- * Requires:
- *  Nothing
- *
- * Effects:
- *  Pauses uart transmission (data to host)
- *
- */
-void uart_pause_transmission();
-
-
-/**
- * Requires:
- *  Nothing
- *
- *  Effects:
- *      Pauses uart reception (new data rejected)
- */
-void uart_pause_receive();
+int uart_clear_rx_buffer(){
+    rx_level = 0;
+    return 0;
+}
 
 
 
@@ -146,7 +121,25 @@ void uart_pause_receive();
  *      returns less than num_bytes if the software buffer cannot hold all of data
  *
  */
-int uart_send_bytes(uint8_t *data, int num_bytes);
+int uart_send_bytes(uint8_t *data, int num_bytes){
+    int i, bytes_add;
+    //temporarily disable uart interrupts
+    IE2 &= ~(BIT1 + BIT0); //disable interrupts before accessing tx_top & tx_level
+    uint8_t *bottom = tx_top + tx_level;
+    if (bottom >= (tx_buffer + UART_BUFFER_DEPTH))
+        bottom -= UART_BUFFER_DEPTH;
+    bytes_add = (num_bytes > (UART_BUFFER_DEPTH - tx_level)) ? (UART_BUFFER_DEPTH - tx_level) : num_bytes; //calculate bytes to add to buffer
+    IE2 |= (BIT1 + BIT0); //enable interrupts
+    for (i = 0; i < bytes_add; i++){
+        *bottom++ = data[i];
+        if(bottom >= (tx_buffer + UART_BUFFER_DEPTH))
+                bottom -= UART_BUFFER_DEPTH;
+        tx_level++; //increment tx level
+    }
+
+    return bytes_add; //return number of bytes added
+}
+
 
 /**
  * Requires:
@@ -161,6 +154,27 @@ int uart_send_bytes(uint8_t *data, int num_bytes);
  *
  *
  */
-int uart_receive_bytes(uint8_t *data, int num_bytes); //moves bytes from queue to data, returns number of bytes moved
+int uart_receive_bytes(uint8_t *data, int num_bytes){
+    int i;
+    IE2 &= ~(BIT1 + BIT0); //disable interrupts before accessing tx_top & tx_level
+    unsigned int bytes_receive = (num_bytes > rx_level) ? (rx_level) : num_bytes;
+    uint8_t *rx_top = (rx_bottom - rx_level);
+    IE2 |= (BIT1 + BIT0); //re-enable interrupts
+    if(rx_top < rx_buffer)
+        rx_top -= UART_BUFFER_DEPTH;
+
+    for(i = 0; i < bytes_receive; i++){
+        *data++ = *tx_top++;
+         if(rx_top < rx_buffer)
+             rx_top -= UART_BUFFER_DEPTH;
+         rx_level--;
+    }
+
+    return bytes_receive;
+
+}
+
+
+
 
 

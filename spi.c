@@ -7,13 +7,6 @@
 
 #include "spi.h"
 
-static volatile bool async_done;
-static uint8_t *txbuf;
-static uint8_t *rxbuf;
-static int tx_loc;
-static int rx_loc;
-static int data_size;
-
 
 bool spi_free(void){
     return async_done;

@@ -15,6 +15,18 @@
 //Depth of uart buffer in bytes
 #define UART_BUFFER_DEPTH 32
 
+uint8_t tx_buffer[UART_BUFFER_DEPTH];
+
+uint8_t rx_buffer[UART_BUFFER_DEPTH];
+
+int tx_level;
+
+int rx_level;
+
+uint8_t *tx_top; //read from top, write to bottom
+
+uint8_t *rx_bottom;
+
 /**
  * Requires:
  *  Nothing
@@ -65,27 +77,6 @@ int uart_clear_tx_buffer();
  *
  */
 int uart_clear_rx_buffer();
-
-
-/**
- * Requires:
- *  Nothing
- *
- * Effects:
- *  Pauses uart transmission (data to host)
- *
- */
-void uart_pause_transmission();
-
-
-/**
- * Requires:
- *  Nothing
- *
- *  Effects:
- *      Pauses uart reception (new data rejected)
- */
-void uart_pause_receive();
 
 
 
