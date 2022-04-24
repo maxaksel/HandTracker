@@ -7,7 +7,7 @@
 
 #include "spi.h"
 
-static bool async;
+static bool async_done;
 static uint8_t *txbuf;
 static uint8_t *rxbuf;
 static int tx_loc;
@@ -15,6 +15,9 @@ static int rx_loc;
 static int data_size;
 
 
+bool spi_free(void){
+    return async_done;
+}
 
 int spi_init(void){
 
@@ -41,9 +44,9 @@ int spi_init(void){
 
     UCB0CTL1 &= ~0b00000001; //Clear USB0WRST
 
-    IE2 &= ~(BIT2 + BIT3);
+    IE2 &= ~(BIT2 + BIT3); //disable TX/RX interrupt by default
 
-    async = 0; //not in any operating mode
+    async_done = true;
     tx_loc = 0;
     rx_loc = 0;
     data_size = 0;
@@ -51,9 +54,12 @@ int spi_init(void){
     return 0;
 }
 
-uint8_t spi_send_receive_byte(uint8_t byte){
+int spi_send_receive_byte(uint8_t byte){
 
-    IE2 &= ~(BIT2 + BIT3);
+    if(async_done == false) //in middle of async transmission
+        return -1;
+
+    IE2 &= ~(BIT2 + BIT3); //disable interrupts for synchronous function
 
     while( (UCB0STAT & 0x01) ); //wait while busy
 
@@ -66,9 +72,12 @@ uint8_t spi_send_receive_byte(uint8_t byte){
 }
 
 
-uint16_t spi_send_receive_two_bytes(uint16_t data){
+int spi_send_receive_two_bytes(uint16_t data){
 
-    IE2 &= ~(BIT2 + BIT3);
+    if(async_done == false) //in middle of async transmission
+        return -1;
+
+    IE2 &= ~(BIT2 + BIT3); //disable interrupts for synchronous function
 
     uint16_t retval;
 
@@ -98,10 +107,10 @@ uint16_t spi_send_receive_two_bytes(uint16_t data){
 int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_bytes){
     int i; //counter
 
-    IE2 &= ~(BIT2 + BIT3);
-
-    if(async)
+    if(async_done == false) //in middle of async transmission
         return -1;
+
+    IE2 &= ~(BIT2 + BIT3); //disable interrupts for synchronous function
 
     while( (UCB0STAT & 0x01) ); //wait until not busy
 
@@ -125,10 +134,8 @@ int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_byte
 
 int spi_start_asynch_transmission(uint8_t *data_send, uint8_t *data_receive, int num_bytes){
 
-    if((tx_loc != data_size) || (rx_loc != data_size))
+    if((tx_loc != data_size) || (rx_loc != data_size) || !async_done)
         return -1; //UCB0 busy with another transmission
-
-    async = true;
 
     (void) (UCB0RXBUF); //clear RX buffer
     (void) (UCB0RXBUF); //clear RX buffer

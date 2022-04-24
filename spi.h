@@ -13,30 +13,87 @@
 #ifndef SPI_H_
 #define SPI_H_
 
-bool async_done;
+/**
+ * This value is set to true when an asynchronous spi transmission has been completed (all num_bytes sent/received)
+ */
+bool spi_free(void);
 
 
+/**
+ * Requires:
+ *  Nothing
+ *
+ * Effects:
+ *  This function initializes the UCB0 module to perform SPI data transmission at 250 kHz
+ *
+ *
+ */
 int spi_init(void);
 
-uint8_t spi_send_receive_byte(uint8_t byte);
+/**
+ * Requires:
+ *  spi_init should have already been called, spi_free should return true before calling this
+ *  chip select must be set active by another function
+ *
+ *  Effects:
+ *      synchronously sends and receives byte over spi
+ *
+ *      This method holds the processor until completed, should only be used for setup
+ *
+ *      returns -1 on failure, data on success
+ *
+ */
+int spi_send_receive_byte(uint8_t byte);
 
-uint16_t spi_send_receive_two_bytes(uint16_t data);
+
+/**
+ * Requires:
+ *  spi_init should have already been called, spi_free should return true before calling this
+ *  chip_select must be set active by another function
+ *
+ *  Effects:
+ *      synchronously sends and receives two bytes over spi
+ *
+ *      This method holds the processor until completed, should only be used for setup
+ *
+ *      returns -1 on failure, data on success
+ *
+ */
+int spi_send_receive_two_bytes(uint16_t data);
 
 
 
 /**
- * Synchronously send/receive data from SPI - CS must be pulled to active state outside of this function
- * data_send should be an array of num_bytes
- * data_receive should be a location in memory that can store at least num_bytes bytes of data
- * num_bytes should be greater than 0
+ * Requires:
+ *  spi_init should have already been called
+ *  chip select should be pulled low by another function prior to using this
+ *  data_send should be an array of num_bytes
+ *  data_receive should be a location in memory that can store at least num_bytes bytes of data
+ *  num_bytes should be greater than 0
  *
- * Remember that SPI sends + receives in full-duplex mode
- *  if only wanting to read for a specific byte, send all zeros for incative MOSI line
- *  if only wanting to send for a specific byte, ignore that bytes place in data_receive
+ * Effects:
+ *   Synchronously send/receive num_bytes over SPI
+ *
+ *   This method holds the processor until completed, should only be used for setup
+ *
+ *     returns -1 on failure, data on success
  *
  */
 int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_bytes);
 
+
+/**
+ * Requires:
+ *  spi_init should have already been called, spi_free should return true before calling this
+ *  chip_select must be set active by another function
+ *  data_send and data_receive must point to valid regions in memory of at least num_bytes size each
+ *
+ *  Effects:
+ *      initializes interrupt driven transmission and reception of num_bytes of data over spi
+ *      spi_free will return true once transmission is complete
+ *      returns 0 on success, -1 on failure
+ *
+ */
 int spi_start_asynch_transmission(uint8_t *data_send, uint8_t *data_receive, int num_bytes);
 
 
