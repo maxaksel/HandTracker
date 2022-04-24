@@ -1,8 +1,4 @@
 #include <msp430.h> 
-#include <stdint.h>
-#include "serial.h"
-#include "spi.h"
-#include "uart.h"
 
 
 /**
@@ -19,7 +15,7 @@ uint8_t retval;
 int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
-	
+	int led_on = 1;
 
 	//THESE LINES TEST SPI
 	spi_init();
@@ -92,4 +88,34 @@ int main(void)
 	//flash_led();
 
 	//return 0;
+=======
+	led_setup();
+	button_setup();
+
+	while (1) {
+	    int button = get_button_pressed();
+	    if (button == 1) {
+	        led_on++;
+	        if (led_on == 4) led_on = 1;
+	    } else if (button == 2) {
+	        led_on--;
+	        if (led_on == 0) led_on = 3;
+	    }
+
+	    if (led_on == 1) {
+	        d1_on();
+	        d2_off();
+	        d3_off();
+	    } else if (led_on == 2) {
+	        d1_off();
+	        d2_on();
+	        d3_off();
+	    } else if (led_on == 3) {
+	        d1_off();
+	        d2_off();
+	        d3_on();
+	    }
+	    while (get_button_pressed());
+	    clear_button_event_flag();
+	}
 }

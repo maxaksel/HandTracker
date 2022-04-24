@@ -33,9 +33,8 @@ void a0_setup() {
  */
 void a0_start(unsigned int frequency, unsigned int divider) {
     CCTL0 = CCIE; // Timer A interrupt enabled (CCTL0 is TACCTL0)
-
     if (frequency < 16) {
-        break; // CCR0 cannot be increased large enough to accommodate frequencies smaller than 16
+        return; // CCR0 cannot be increased large enough to accommodate frequencies smaller than 16
     }
     a0_divider = divider;
     CCR0 = 1000000 / frequency; // 1 MHz -> CRR0 = 1

@@ -1,0 +1,16 @@
+%
+% 
+% @date 04/22/2022
+
+device = serialport("COM3", 115200);
+
+% Align with 
+alignment_buffer = [0 0 0 0];
+while ~isequal(alignment_buffer, [0xC, 0xA, 0xF, 0xE])
+    in = read(device, 1, "uint8");
+    alignment_buffer = [alignment_buffer(1:3) in];
+end
+
+while 1
+    
+end

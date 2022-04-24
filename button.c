@@ -69,13 +69,13 @@ int get_button_pressed() {
 
     if (sw1) return 1;
     else if (sw2) return 2;
-    return -1; // if no button pressed
+    return 0; // if no button pressed
 }
 
 /**
  * Button interrupt service routine.
  * Sets values of inputs array according to button inputs.
- * Sets appropriate LED value.
+ * Sets appropriate LED value. Add code here to modify ISR.
  */
 #if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT1_VECTOR
