@@ -54,6 +54,22 @@ int spi_init(void){
     return 0;
 }
 
+
+
+void spi_clk_passive_high(void){
+    UCB0CTL0  |= 0b01000000; //set to active low
+    UCB0CTL0 &= ~0b10000000; //change phase too
+}
+
+
+
+
+void spi_clk_passive_low(void){
+    UCB0CTL0 &= ~0b01000000; //set clock to be active high
+    UCB0CTL0 |= 0b10000000; //change phase too
+}
+
+
 int spi_send_receive_byte(uint8_t byte){
 
     if(async_done == false) //in middle of async transmission

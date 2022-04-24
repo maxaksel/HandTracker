@@ -52,6 +52,28 @@ bool spi_overflow_occurred(void);
  */
 int spi_init(void);
 
+
+/**
+ * Requires:
+ *  Nothing
+ *
+ *  Effects:
+ *      This function sets the SPI clk line to be active low (for the LSM9DS1)
+ */
+void spi_clk_passive_high(void);
+
+
+
+/**
+ * Requires:
+ *  Nothing
+ *
+ *  Effects:
+ *  This function sets the SPI clk line to be active high (for the ADC)
+ */
+void spi_clk_passive_low(void);
+
+
 /**
  * Requires:
  *  spi_init should have already been called, spi_free should return true before calling this
