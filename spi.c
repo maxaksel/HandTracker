@@ -7,7 +7,7 @@
 
 #include "spi.h"
 
-static bool async_done;
+static volatile bool async_done;
 static uint8_t *txbuf;
 static uint8_t *rxbuf;
 static int tx_loc;
@@ -22,11 +22,11 @@ bool spi_free(void){
 int spi_init(void){
 
     //set USCWRST
-    UCB0CTL1 |= 0b11000000; //Use SMCLK, set USB0WRST
+    UCB0CTL1 |= 0b11000000; //Use SMCLK
     UCB0CTL0 = 0b01101001; //3-wire SPI,  Bus Master, MSB first, clk passive high
 
 
-    UCB0BR0 = 0b00000100; //set software divider to 4 (250 kHz clock)
+    UCB0BR0 = 0b0001000; //set software divider to 4 (250 kHz clock)
     UCB0BR1 = 0b00000000;
 
     //configure ports
@@ -155,7 +155,7 @@ int spi_start_asynch_transmission(uint8_t *data_send, uint8_t *data_receive, int
     IE2 |= (BIT2 + BIT3); //enable interrupts
 
     UCB0TXBUF = txbuf[tx_loc++]; //put first byte in queue
-
+    (void) (UCB0RXBUF); //clear RX buffer
     __bis_SR_register(GIE); //set GIE
 
     return 0; //successfully initialized transmission
@@ -174,6 +174,9 @@ void __attribute__ ((interrupt(USCIAB0TX_VECTOR))) USCIAB0TX_ISR (void)
 {
     if(tx_loc != data_size){
         UCB0TXBUF = txbuf[tx_loc++]; //write byte to buffer
+    }
+    else{
+        IE2 &= ~BIT3; //disable transmit interrupt
     }
 }
 

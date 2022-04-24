@@ -12,7 +12,21 @@
 #ifndef UART_H_
 #define UART_H_
 
-#define UART_BUFFER_DEPTH
+//Depth of uart buffer in bytes
+#define UART_BUFFER_DEPTH 32
+
+/**
+ * Requires:
+ *  Nothing
+ *
+ *  Effects:
+ *      Initializes software/hardware resources for software buffered uart module on UCA0
+ *
+ */
+void uart_init();
+
+
+
 
 /**
  * Requires:

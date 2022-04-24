@@ -76,7 +76,7 @@ int spi_send_receive_two_bytes(uint16_t data);
  *
  *   This method holds the processor until completed, should only be used for setup
  *
- *     returns -1 on failure, data on success
+ *     returns -1 on failure, 0 on success
  *
  */
 int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_bytes);
@@ -87,6 +87,7 @@ int spi_send_receive_len(uint8_t *data_send, uint8_t *data_receive, int num_byte
  *  spi_init should have already been called, spi_free should return true before calling this
  *  chip_select must be set active by another function
  *  data_send and data_receive must point to valid regions in memory of at least num_bytes size each
+ *  GIE should not be disabled for more than a few cycles during this period
  *
  *  Effects:
  *      initializes interrupt driven transmission and reception of num_bytes of data over spi
