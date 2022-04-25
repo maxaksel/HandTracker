@@ -12,6 +12,12 @@ bool spi_free(void){
     return async_done;
 }
 
+bool spi_overflow_occurred(void){
+    bool temp = overflow;
+    overflow = false;
+    return temp; //return prev value of overflow
+}
+
 int spi_init(void){
 
     //set USCWRST
@@ -19,7 +25,7 @@ int spi_init(void){
     UCB0CTL0 = 0b01101001; //3-wire SPI,  Bus Master, MSB first, clk passive high
 
 
-    UCB0BR0 = 0b0001000; //set software divider to 4 (250 kHz clock)
+    UCB0BR0 = 0b0010000; //set software divider to 4 (250 kHz clock)
     UCB0BR1 = 0b00000000;
 
     //configure ports
@@ -40,6 +46,7 @@ int spi_init(void){
     IE2 &= ~(BIT2 + BIT3); //disable TX/RX interrupt by default
 
     async_done = true;
+    overflow = false;
     tx_loc = 0;
     rx_loc = 0;
     data_size = 0;
@@ -153,44 +160,6 @@ int spi_start_asynch_transmission(uint8_t *data_send, uint8_t *data_receive, int
 
     return 0; //successfully initialized transmission
 }
-
-
-//TXISR
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#pragma vector = USCIAB0TX_VECTOR
-__interrupt void USCIAB0TX_ISR(void)
-#elif defined(__GNUC__)
-void __attribute__ ((interrupt(USCIAB0TX_VECTOR))) USCIAB0TX_ISR (void)
-#else
-#error Compiler not supported!
-#endif
-{
-    if(tx_loc != data_size){
-        UCB0TXBUF = txbuf[tx_loc++]; //write byte to buffer
-    }
-    else{
-        IE2 &= ~BIT3; //disable transmit interrupt
-    }
-}
-
-//RXISR
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#pragma vector = USCIAB0RX_VECTOR
-__interrupt void USCIAB0RX_ISR(void)
-#elif defined(__GNUC__)
-void __attribute__ ((interrupt(USCIAB0RX_VECTOR))) USCIAB0RX_ISR (void)
-#else
-#error Compiler not supported!
-#endif
-{
-    if(rx_loc != data_size){
-        rxbuf[rx_loc++] = UCB0RXBUF; //read byte from buffer
-    }
-    if(rx_loc == data_size){
-        async_done = true; //indicate that transmission was completed
-    }
-}
-
 
 
 

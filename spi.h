@@ -13,17 +13,19 @@
 #ifndef SPI_H_
 #define SPI_H_
 
-volatile bool async_done;
+volatile bool async_done; //status bool
 
-uint8_t *txbuf;
+volatile bool overflow; //status bool
 
-uint8_t *rxbuf;
+uint8_t *txbuf; //location of tx buffer
 
-int tx_loc;
+uint8_t *rxbuf; //location of rx buffer
 
-int rx_loc;
+volatile int tx_loc; //how many bytes we are into tx buf
 
-int data_size;
+volatile int rx_loc; //how many bytes we are into rx buf
+
+int data_size; //how many bytes in this transmission
 
 
 
@@ -31,6 +33,12 @@ int data_size;
  * This value is set to true when an asynchronous spi transmission has been completed (all num_bytes sent/received)
  */
 bool spi_free(void);
+
+/**
+ * This function returns true if an RX buffer overflow occurred since the last time it was called
+ */
+bool spi_overflow_occurred(void);
+
 
 
 /**

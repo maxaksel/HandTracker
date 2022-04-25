@@ -29,12 +29,15 @@ void uart_init(){
 
     //initialize uart module
 
-    UCA0CTL1 = 0b11110000; //UART settings
-    UCA0CTL0 = 0b00100000; //more UART settings
+    UCA0CTL1 = 0b11110001; //UART settings with WRST
+    UCA0CTL0 = 0b00000000; //more UART settings
 
-    //Baud rate = 111 kHz
-    UCA0BR0 = 0x09;
+    //Baud rate = ~115,000 kHz
+    UCA0BR0 = 0x08;
     UCA0BR1 = 0x00;
+
+    //Modulation settings
+    UCA0MCTL = 0b00001100;
 
     //select alternate function
 
@@ -46,8 +49,8 @@ void uart_init(){
     P1DIR |= BIT2; //set TXD to output
     P1DIR &= ~BIT1; //set RXD to input
 
-    //clear interrupt flags
-    IFG2 &= ~(BIT0 + BIT1);
+    //enable module
+    UCA0CTL1 &= ~0b00000001; //clear wrst
 
     //enable interrupts
     IE2 |= (BIT0 + BIT1);
@@ -173,6 +176,14 @@ int uart_receive_bytes(uint8_t *data, int num_bytes){
     return bytes_receive;
 
 }
+
+
+
+
+
+
+
+
 
 
 

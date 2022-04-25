@@ -1,7 +1,8 @@
 #include <msp430.h> 
 #include <stdint.h>
-#include "test.h"
+#include "serial.h"
 #include "spi.h"
+#include "uart.h"
 
 
 /**
@@ -19,6 +20,8 @@ int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
 	
+
+	/**THESE LINES TEST SPI
 	spi_init();
 
 	P2OUT &= ~BIT3; //toggle CS
@@ -45,10 +48,21 @@ int main(void)
 
 	while(!spi_free()); //wait until SPI module free
 
-	//val = spi_send_receive_two_bytes(0x8F00);
-	//retval = 0xFF & val;
-
 	P2OUT |= BIT3; //toggle CS
+    **/
+
+	//THESE LINES TEST UART
+
+	uint8_t uart_send_data[7] = { 0x48, 0x48, 0x48, 0x48, 0x48, 0x48, 0x10};
+	uint8_t uart_receive_data[2] = {0x00, 0x00};
+	volatile int test_send;
+	volatile int test_receive;
+
+	uart_init();
+
+	test_send = uart_send_bytes(uart_send_data, 7);
+
+	test_receive = uart_receive_bytes(uart_receive_data, 2);
 
 	while(1); //loop infinitely
 
@@ -56,5 +70,5 @@ int main(void)
 
 	//flash_led();
 
-	return 0;
+	//return 0;
 }

@@ -15,17 +15,17 @@
 //Depth of uart buffer in bytes
 #define UART_BUFFER_DEPTH 32
 
-uint8_t tx_buffer[UART_BUFFER_DEPTH];
+uint8_t tx_buffer[UART_BUFFER_DEPTH]; //array to hold values being sent
 
-uint8_t rx_buffer[UART_BUFFER_DEPTH];
+uint8_t rx_buffer[UART_BUFFER_DEPTH]; //array to hold values being received
 
-int tx_level;
+int tx_level; //how full transmit buffer is
 
-int rx_level;
+int rx_level; //how full receive buffer is
 
-uint8_t *tx_top; //read from top, write to bottom
+uint8_t *tx_top; //read from top
 
-uint8_t *rx_bottom;
+uint8_t *rx_bottom;  //write to bottom
 
 /**
  * Requires:
