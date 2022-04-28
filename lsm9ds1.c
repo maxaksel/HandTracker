@@ -1,50 +1,67 @@
 /**
- * Module for communicating with the LSM9DS1 sensor.
+ * Module for communicating with the accelerometer and gyroscope
+ * onboard the LSM9DS1 chip.
  *
- * @date 04/22/2022
+ * @date 04/25/2022
  */
 
-#include <msp430.h>
 #include "lsm9ds1.h"
 
+uint8_t gyro_data_send[] = {GYRO_OUT_ADDR, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t acc_data_send[] = {ACC_OUT_ADDR, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
 /**
- * Get axis rotation and acceleration acceleration rates along the x-, y-, and z-axes.
- * Acceleration in each direction is returned as a twos complement integer ranging from
- * -32,768 to +32,767. This range corresponds linearly to [-4g, +4g]. Angular rotation
- * in each direction is returned as a twos complement integer ranging from
- * -32,768 to +32,767. This range corresponds linearly to [-2000dps, 2000dps]. Assumes
- * SPI has already been configured and initialized.
- *
- * @return a pointer to an array of six 16-bit signed integers.
+ * Sets up LSM9DS1 to read accelerometer and gyro. Writing to CTRL_REG1_G enables
+ * both the accelerometer and gyro. Sending 11011001 = 0xD9 to this register corresponds
+ * to a 40 Hz low-pass filter and 952 Hz output data rate.
  */
-void read_gyro_acc_data(uint16_t* retvals) {
-    while (UCB0STAT & 0x01); // wait while busy
-    uint8_t clear = UCB0RXBUF; // clear data from RXBUF
+void setup_acc_gyro() {
+    spi_clk_passive_high();
 
-    P2OUT &= ~CS_AG; // pull accelerometer and gyro chip select low
+    P2OUT &= ~CS_AG; // pull A/G chip select down
 
-    uint8_t request = 0x80 | GYRO_OUT_ADDR;
-    UCB0TXBUF = request; // request data from the gyro register
-    while (!(IFG2 & BIT3)); // wait for TXB flag
+    uint8_t ctrl_send[] = {CTRL_REG1_G, 0xD9};
+    uint8_t ctrl_recv[] = {0x0, 0x0};
+    spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
 
-    unsigned char counter;
-    for (counter = 0; counter < 3; counter++) {
-        while(!(IFG2 & BIT2)); // wait for RXB flag
-        retvals[counter] = UCB0RXBUF << 8; // set msbs
-        while(!(IFG2 & BIT2)); // wait for RXB flag
-        retvals[counter] |= UCB0RXBUF; // set lsbs
-    }
 
-    request = 0x80 | ACC_OUT_ADDR;
-    UCB0TXBUF = request; // request data from the gyro register
-    while (!(IFG2 & BIT3)); // wait for TXB flag
+    P2OUT |= CS_AG; // pull A/G chip select up
+}
 
-    for (counter = 3; counter < 6; counter++) {
-        while(!(IFG2 & BIT2)); // wait for RXB flag
-        retvals[counter] = UCB0RXBUF << 8; // set msbs
-        while(!(IFG2 & BIT2)); // wait for RXB flag
-        retvals[counter] |= UCB0RXBUF; // set lsbs
-    }
+/**
+ * Read accelerometer and gyroscope values into a 12-byte data buffer specified
+ * as a parameter. This function is blocking.
+ *
+ * @param data an array of length six containing int16_t data
+ */
+void get_acc_gyro(int16_t* data) {
+    spi_clk_passive_high();
 
-    P2OUT |= CS_AG; // pull accelerometer and gyro chip select high
+    P2OUT &= ~CS_AG; // pull A/G chip select down
+
+    while (!spi_free());
+    spi_start_asynch_transmission(gyro_data_send, gyro_data_recv, 6);
+    while (!spi_free());
+    spi_start_asynch_transmission(acc_data_send, acc_data_recv, 6);
+    while (!spi_free());
+
+    // Read acc data
+    data[0] = acc_data_recv[1];
+    data[0] |= acc_data_recv[2] << 8;
+    data[1] = acc_data_recv[3];
+    data[1] |= acc_data_recv[4] << 8;
+    data[2] = acc_data_recv[5];
+    data[2] |= acc_data_recv[6] << 8;
+
+    // Read gyro data
+    data[4] = gyro_data_recv[1];
+    data[4] |= gyro_data_recv[2] << 8;
+    data[5] = gyro_data_recv[3];
+    data[5] |= gyro_data_recv[4] << 8;
+    data[6] = gyro_data_recv[5];
+    data[6] |= gyro_data_recv[6] << 8;
+
+    P2OUT |= CS_AG; // pull A/G chip select up
 }
