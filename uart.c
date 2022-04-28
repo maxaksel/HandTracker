@@ -32,8 +32,8 @@ void uart_init(){
     UCA0CTL1 = 0b11110001; //UART settings with WRST
     UCA0CTL0 = 0b00000000; //more UART settings
 
-    //Baud rate = ~115,000 kHz
-    UCA0BR0 = 0x08;
+    //Baud rate = 38,400 kHz
+    UCA0BR0 = 26;
     UCA0BR1 = 0x00;
 
     //Modulation settings

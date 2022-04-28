@@ -1,1 +1,0 @@
-Accompanying Processing sketches.
