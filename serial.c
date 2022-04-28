@@ -17,7 +17,7 @@ void __attribute__ ((interrupt(USCIAB0TX_VECTOR))) USCIAB0TX_ISR (void)
 #error Compiler not supported!
 #endif
 {
-    if((IFG2 & BIT3) && (IE2 & BIT3)){ //UCB0 TX Interrupt
+    if((IE2 & BIT3) && (IFG2 & BIT3)){ //UCB0 TX Interrupt
         if(tx_loc != data_size){
             UCB0TXBUF = txbuf[tx_loc++]; //write byte to buffer
         }
@@ -25,7 +25,7 @@ void __attribute__ ((interrupt(USCIAB0TX_VECTOR))) USCIAB0TX_ISR (void)
             IE2 &= ~BIT3; //clear transmit interrupt enable
         }
     }
-    if((IFG2 & BIT1) && (IE2 & BIT1)){ //UCA0 TX Interrupt
+    if((IE2 & BIT1) && (IFG2 & BIT1)){ //UCA0 TX Interrupt
         if(tx_level != 0){
             UCA0TXBUF = *tx_top++;
             tx_level--; //decrement
@@ -50,7 +50,7 @@ void __attribute__ ((interrupt(USCIAB0RX_VECTOR))) USCIAB0RX_ISR (void)
 #error Compiler not supported!
 #endif
 {
-    if ((IFG2 & BIT2) && (IE2 & BIT2)){ //UCB0 RX Interrupt
+    if ((IE2 & BIT2) && (IFG2 & BIT2)){ //UCB0 RX Interrupt
         if(rx_loc != data_size){
             rxbuf[rx_loc++] = UCB0RXBUF; //read byte from buffer
             if(rx_loc == data_size){
@@ -64,7 +64,7 @@ void __attribute__ ((interrupt(USCIAB0RX_VECTOR))) USCIAB0RX_ISR (void)
             overflow = true;
         }
     }
-    if((IFG2 & BIT0) && (IE2 & BIT0)){ //UCA0 RX Interrupt
+    if((IE2 & BIT0) && (IFG2 & BIT0)){ //UCA0 RX Interrupt
         if(rx_level < UART_BUFFER_DEPTH){
             *rx_bottom++ = UCA0RXBUF;
             rx_level++;
