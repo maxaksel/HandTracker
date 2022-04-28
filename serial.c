@@ -61,7 +61,8 @@ void __attribute__ ((interrupt(USCIAB0RX_VECTOR))) USCIAB0RX_ISR (void)
             (void) UCA0RXBUF; //clear IFG
         }
         if(UCB0STAT & BIT5){
-            overflow = true;
+            overflow = true; //buffer overrun, data bad unless only transmitting
+            async_done = true;
         }
     }
     if((IE2 & BIT0) && (IFG2 & BIT0)){ //UCA0 RX Interrupt
