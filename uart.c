@@ -5,10 +5,8 @@
  *      Author: joshs
  */
 
-#include <uart.h>
-
-
-
+#include "uart.h"
+#include <msp430.h>
 
 /**
  * Requires:

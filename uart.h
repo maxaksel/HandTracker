@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <msp430.h>
 
 #ifndef UART_H_
 #define UART_H_

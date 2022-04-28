@@ -1,8 +1,37 @@
-/*
- * lsm9ds1.h
+/**
+ * Module for communicating with the accelerometer and gyroscope
+ * onboard the LSM9DS1 chip.
  *
- *  Created on: Mar 29, 2022
- *      Author: maxab
+ * @date 04/25/2022
  */
 
+#include <msp430.h>
+#include <stdint.h>
+#include "spi.h"
 
+#define CS_AG BIT3
+#define CHIP_ADDR 0x6b
+#define WHO_AM_I 0x0f
+#define CTRL_REG1_G 0x10
+#define GYRO_OUT_ADDR 0x18
+#define ACC_OUT_ADDR 0x28
+
+#ifndef LSM9DS1_H_
+#define LSM9DS1_H_
+
+/**
+ * Sets up LSM9DS1 to read accelerometer and gyro. Writing to CTRL_REG1_G enables
+ * both the accelerometer and gyro. Sending 11011001 = 0xD9 to this register corresponds
+ * to a 40 Hz low-pass filter and 952 Hz output data rate.
+ */
+void setup_acc_gyro();
+
+/**
+ * Read accelerometer and gyroscope values into a 12-byte data buffer specified
+ * as a parameter. This function is blocking.
+ *
+ * @param data an array of length six containing int16_t data
+ */
+void get_acc_gyro(int16_t* data);
+
+#endif
