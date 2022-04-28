@@ -18,12 +18,13 @@ void button_setup() {
     P1REN |= BIT3 + BIT4; // enable pull up/down resistors
     P1OUT |= BIT3 + BIT4; // set resistors to pull up
 
-    P1IES |= BIT3 + BIT4; // listen for high to low transitions (i.e., button presses)
-    P1IFG &= ~(BIT3 + BIT4); // clear any pending interrupts
-    P1IE |= BIT3 + BIT4; // enable interrupts for these pins
+    //don't need interupts for this device
+    //P1IES |= BIT3 + BIT4; // listen for high to low transitions (i.e., button presses)
+    //P1IFG &= ~(BIT3 + BIT4); // clear any pending interrupts
+    //P1IE |= BIT3 + BIT4; // enable interrupts for these pins
 
-    // Set up internal state variables
-    button_event_flag = false;
+    //Set up internal state variables
+    //button_event_flag = false;
 }
 
 /**
@@ -60,22 +61,22 @@ void clear_button_event_flag() {
 
 /**
  * Determines which button has been
- * pressed (1: SW1, 2: SW2). Returns
- * -1 if no button is depressed.
+ * pressed (1: SW1, 2: SW2, 3: Both, 0: none).
  */
 int get_button_pressed() {
     bool sw1 = ~P1IN & BIT3;
     bool sw2 = ~P1IN & BIT4;
+    int retval = 0;
 
-    if (sw1) return 1;
-    else if (sw2) return 2;
-    return -1; // if no button pressed
+    if (sw1) retval+= 1;
+    if (sw2) retval+= 2;
+    return retval; // if no button pressed
 }
 
 /**
  * Button interrupt service routine.
  * Sets values of inputs array according to button inputs.
- * Sets appropriate LED value.
+ * Sets appropriate LED value. Add code here to modify ISR.
  */
 #if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT1_VECTOR
