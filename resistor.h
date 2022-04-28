@@ -14,11 +14,25 @@
 #define CS_A BIT0
 
 /**
- * Loads a five-byte buffer with resistor values. A pointer to the buffer is
- * specified as the parameter to this function.
- *
- * @param a uint8_t pointer.
+ * Set up resistor ADC to sample.
  */
-void get_resistor_data(uint8_t* data);
+void setup_resistors();
+
+/**
+ * Signals ADC to sample channels 0 through 4 inclusive. Once the
+ * ADC has sampled these channels, output data can be read using the
+ * read_resistor_data function.
+ */
+void request_resistor_data();
+
+/**
+ * Reads digitally sampled resistor values from the ADC after a data
+ * request has been sent. Converts resolution from 12-bit to 8-bit
+ * and loads each resistance value in a length-5 data buffer of int8_t
+ * data type.
+ *
+ * @param a pointer to an int8_t buffer.
+ */
+void read_resistor_data(int8_t* data);
 
 #endif
