@@ -3,7 +3,7 @@
 % @date 04/22/2022
 clear;clc;
 baud_rate = 38400;
-device = serialport("COM9", baud_rate);
+device = serialport("COM7", baud_rate);
 
 % Align with incoming data
 alignment_buffer = [0 0];
@@ -19,8 +19,8 @@ buffer = read(device, 9, 'int16'); % maintain alignment
 while 1
     buffer = read(device, 10, 'int16');
     % disp(buffer(1));
-    gyro = buffer(5:7) * 2000 / (2^16); % DPS
-    acc = buffer(2:4) * 4 / (2^16); % g-forces
+    gyro = buffer(5:7) * 2000 / (2^15); % DPS
+    acc = buffer(2:4) * 2 * 9.8 / (2^15); % g-forces
     % disp(buffer);
     
     res = [0 0 0 0 0];
@@ -39,9 +39,10 @@ while 1
     inputs = bitand(int16(buffer(10)), int16(hex2dec('FF00')), 'int16');
     inputs = bitshift(int16(inputs), -8, 'int16'); % shift upper bits to lower place
     
-    % disp(acc);
+    % disp(inputs);
+    % disp(norm(acc));
     % disp(gyro);
-    disp(res);
+    % disp(res);
     % fprintf("Gyro: %f, %f, %f | Acc: %f, %f, %f | Res: %d, %d, %d, %d, %d | Input: %d\n",...
     % gyro(1), gyro(2), gyro(3), acc(1), acc(2), acc(3), res(1), res(2), res(3), res(4), res(5), inputs);
 end
