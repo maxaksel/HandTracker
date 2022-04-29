@@ -25,7 +25,7 @@ int spi_init(void){
     UCB0CTL0 = 0b01101001; //3-wire SPI,  Bus Master, MSB first, clk passive high
 
 
-    UCB0BR0 = 0b0010000; //set software divider to 4 (250 kHz clock)
+    UCB0BR0 = 0b0010100; //set software divider to 20 (50.0 kHz clock)
     UCB0BR1 = 0b00000000;
 
     //configure ports
