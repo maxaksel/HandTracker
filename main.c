@@ -8,6 +8,7 @@
 #include "lsm9ds1.h"
 #include "led.h"
 #include "button.h"
+#include "resistor.h"
 
 
 /**
@@ -18,7 +19,6 @@ int val;
 uint8_t retval;
 
 uint8_t packet[20];
-uint16_t gyro_data[6];
 
 
 
@@ -32,9 +32,9 @@ int main(void)
 	//set GIE
 	__bis_SR_register(GIE);
 	//setup ADC
-
+	setup_resistors();
 	//setup LSM
-
+	setup_acc_gyro();
 	//setup UART
 	uart_init();
 	//setup LEDs
@@ -42,7 +42,7 @@ int main(void)
 	//setup buttons
 	button_setup();
 	//request first bytes from ADC
-
+	request_resistor_data();
 	//setup timer A for use with Interrupt
 	a0_setup();
 	//set to continuous running, 50 Hz
@@ -53,16 +53,14 @@ int main(void)
 	    //wait for timer to go off
 	    __bis_SR_register(GIE +  LPM0_bits); //enable interrupts and put in Sleep
 	    //read data from LSM
-	    //read_gyro_acc_data(gyro_data);
-	    //transfer data to packet
-
+	    get_acc_gyro((int16_t *) &packet[2]);
 	    //read data from ADC
-
-	    //transfer to packet
-
+	    read_resistor_data((int8_t *) &packet[14]);
+	    //request new data from ADC
+	    request_resistor_data();
 	    //get buttons
 	    packet[19] = (uint8_t) get_button_pressed();
 	    //send packet to host
-	    //uart_send_bytes(packet, 20);
+	    uart_send_bytes(packet, 20);
 	}
 }
