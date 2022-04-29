@@ -39,7 +39,8 @@ while 1
     inputs = bitand(int16(buffer(10)), int16(hex2dec('FF00')), 'int16');
     inputs = bitshift(int16(inputs), -8, 'int16'); % shift upper bits to lower place
     
-    % disp(acc);
+    % disp(inputs);
+    % disp(norm(acc));
     % disp(gyro);
     % disp(res);
     % fprintf("Gyro: %f, %f, %f | Acc: %f, %f, %f | Res: %d, %d, %d, %d, %d | Input: %d\n",...
