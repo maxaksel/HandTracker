@@ -7,9 +7,9 @@
 
 #include "lsm9ds1.h"
 
-uint8_t gyro_data_send[] = {GYRO_OUT_ADDR, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t gyro_data_send[] = {GYRO_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-uint8_t acc_data_send[] = {ACC_OUT_ADDR, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t acc_data_send[] = {ACC_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /**
@@ -25,7 +25,7 @@ void setup_acc_gyro() {
     uint8_t ctrl_send[] = {CTRL_REG1_G, 0xD9};
     uint8_t ctrl_recv[] = {0x0, 0x0};
     spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
-
+    while (!spi_free());
 
     P2OUT |= CS_AG; // pull A/G chip select up
 }
@@ -48,20 +48,20 @@ void get_acc_gyro(int16_t* data) {
     while (!spi_free());
 
     // Read acc data
-    data[0] = acc_data_recv[1];
-    data[0] |= acc_data_recv[2] << 8;
-    data[1] = acc_data_recv[3];
-    data[1] |= acc_data_recv[4] << 8;
-    data[2] = acc_data_recv[5];
-    data[2] |= acc_data_recv[6] << 8;
+    data[0] = acc_data_recv[1] << 8;
+    data[0] |= acc_data_recv[2];
+    data[1] = acc_data_recv[3] << 8;
+    data[1] |= acc_data_recv[4];
+    data[2] = acc_data_recv[5] << 8;
+    data[2] |= acc_data_recv[6];
 
     // Read gyro data
-    data[4] = gyro_data_recv[1];
-    data[4] |= gyro_data_recv[2] << 8;
-    data[5] = gyro_data_recv[3];
-    data[5] |= gyro_data_recv[4] << 8;
-    data[6] = gyro_data_recv[5];
-    data[6] |= gyro_data_recv[6] << 8;
+    data[3] = gyro_data_recv[1] << 8;
+    data[3] |= gyro_data_recv[2];
+    data[4] = gyro_data_recv[3] << 8;
+    data[4] |= gyro_data_recv[4];
+    data[5] = gyro_data_recv[5] << 8;
+    data[5] |= gyro_data_recv[6];
 
     P2OUT |= CS_AG; // pull A/G chip select up
 }

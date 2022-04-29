@@ -39,8 +39,8 @@ void enable_button_input() {
  * Disable button input.
  */
 void disable_button_input() {
-    P1IFG &= ~(BIT3 + BIT4); // clear interrupt bits
-    P1IE |= BIT3 + BIT4; // enable interrupts for these pins
+    //P1IFG &= ~(BIT3 + BIT4); // clear interrupt bits
+    //P1IE |= BIT3 + BIT4; // enable interrupts for these pins
 }
 
 /**
@@ -87,8 +87,8 @@ void __attribute__ ((interrupt(PORT1_VECTOR))) button (void)
 #error Compiler not supported!
 #endif
 {
-    button_event_flag = true;
-    P1IES ^= BIT3 + BIT4; // toggle edge Trigger
-    P1IFG &= ~(BIT3 + BIT4); // clear interrupt bits
+    //button_event_flag = true;
+    //P1IES ^= BIT3 + BIT4; // toggle edge Trigger
+    //P1IFG &= ~(BIT3 + BIT4); // clear interrupt bits
     // __bic_SR_register_on_exit(LPM3_bits); // exit LPM3 when returning to program (clear LPM3 bits)
 }

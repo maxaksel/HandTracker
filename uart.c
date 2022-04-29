@@ -137,7 +137,9 @@ int uart_send_bytes(uint8_t *data, int num_bytes){
                 bottom -= UART_BUFFER_DEPTH;
         tx_level++; //increment tx level
     }
-
+    if(bytes_add != num_bytes){
+        __asm(" nop");
+    }
     return bytes_add; //return number of bytes added
 }
 
