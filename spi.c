@@ -51,6 +51,8 @@ int spi_init(void){
     rx_loc = 0;
     data_size = 0;
 
+    __bis_SR_register(GIE); //enable interrupts
+
     return 0;
 }
 
