@@ -130,13 +130,13 @@ int uart_send_bytes(uint8_t *data, int num_bytes){
     if (bottom >= (tx_buffer + UART_BUFFER_DEPTH))
         bottom -= UART_BUFFER_DEPTH;
     bytes_add = (num_bytes > (UART_BUFFER_DEPTH - tx_level)) ? (UART_BUFFER_DEPTH - tx_level) : num_bytes; //calculate bytes to add to buffer
-    IE2 |= (BIT1 + BIT0); //enable interrupts
     for (i = 0; i < bytes_add; i++){
         *bottom++ = data[i];
         if(bottom >= (tx_buffer + UART_BUFFER_DEPTH))
                 bottom -= UART_BUFFER_DEPTH;
         tx_level++; //increment tx level
     }
+    IE2 |= (BIT1 + BIT0); //enable interrupts
     if(bytes_add != num_bytes){
         __asm(" nop");
     }

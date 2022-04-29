@@ -18,13 +18,13 @@ uint8_t tx_buffer[UART_BUFFER_DEPTH]; //array to hold values being sent
 
 uint8_t rx_buffer[UART_BUFFER_DEPTH]; //array to hold values being received
 
-int tx_level; //how full transmit buffer is
+volatile int tx_level; //how full transmit buffer is
 
-int rx_level; //how full receive buffer is
+volatile int rx_level; //how full receive buffer is
 
-uint8_t *tx_top; //read from top
+volatile uint8_t *tx_top; //read from top
 
-uint8_t *rx_bottom;  //write to bottom
+volatile uint8_t *rx_bottom;  //write to bottom
 
 /**
  * Requires:
