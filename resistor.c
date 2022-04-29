@@ -56,12 +56,12 @@ void read_resistor_data(int8_t* data) {
     while (!spi_free());
     P2OUT |= CS_A; // pull ADC chip-select high
 
-    int i;
+    unsigned int i;
     uint16_t full_res_value;
 
     for (i = 0; i < NUM_RESISTORS; i++) {
-        full_res_value = data_recv[i << 1 + 1];
-        full_res_value |= (data_recv[i << 1]<<8);
-        data[i] = full_res_value >> 4; // convert from 12-bit to 8-bit resolution
+        full_res_value = (uint16_t) data_recv[(i << 1) + 1];
+        full_res_value |= (((uint16_t) data_recv[(i << 1)])<<8);
+        data[i] = (uint8_t) (full_res_value >> 4); // convert from 12-bit to 8-bit resolution
     }
 }

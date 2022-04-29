@@ -48,20 +48,20 @@ void get_acc_gyro(int16_t* data) {
     while (!spi_free());
 
     // Read acc data
-    data[0] = acc_data_recv[1] << 8;
-    data[0] |= acc_data_recv[2];
-    data[1] = acc_data_recv[3] << 8;
-    data[1] |= acc_data_recv[4];
-    data[2] = acc_data_recv[5] << 8;
-    data[2] |= acc_data_recv[6];
+    data[0] = acc_data_recv[1];
+    data[0] |= acc_data_recv[2] << 8;
+    data[1] = acc_data_recv[3];
+    data[1] |= acc_data_recv[4] << 8;
+    data[2] = acc_data_recv[5];
+    data[2] |= acc_data_recv[6] << 8;
 
     // Read gyro data
-    data[3] = gyro_data_recv[1] << 8;
-    data[3] |= gyro_data_recv[2];
-    data[4] = gyro_data_recv[3] << 8;
-    data[4] |= gyro_data_recv[4];
-    data[5] = gyro_data_recv[5] << 8;
-    data[5] |= gyro_data_recv[6];
+    data[3] = gyro_data_recv[1];
+    data[3] |= gyro_data_recv[2] << 8;
+    data[4] = gyro_data_recv[3];
+    data[4] |= gyro_data_recv[4] << 8;
+    data[5] = gyro_data_recv[5];
+    data[5] |= gyro_data_recv[6] << 8;
 
     P2OUT |= CS_AG; // pull A/G chip select up
 }
