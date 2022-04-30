@@ -41,7 +41,7 @@ while 1
     
     % disp(inputs);
     % disp(norm(acc));
-    % disp(gyro);
+    disp(gyro);
     % disp(res);
     % fprintf("Gyro: %f, %f, %f | Acc: %f, %f, %f | Res: %d, %d, %d, %d, %d | Input: %d\n",...
     % gyro(1), gyro(2), gyro(3), acc(1), acc(2), acc(3), res(1), res(2), res(3), res(4), res(5), inputs);

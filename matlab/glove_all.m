@@ -1,10 +1,7 @@
+% Script for debugging orientation tracking.
+% 
+% @date 04/29/2022
 clear;clc;
-
-lat = 21.3252 * pi / 180; % latitude in radians
-long = -158.027 * pi / 180; % longitude in radians
-altitude = 500; % altitude in [ units ]
-Xgeodetic0 = [lat long altitude]; % latitude, longitude, altitude
-
 baud_rate = 38400;
 device = serialport("COM7", baud_rate);
 
@@ -30,10 +27,9 @@ end
 disp("Aligned.");
 read(device, 9, "int16");
 
-ang = zeros(10, 3);
+angles = [0 0 0];
 norm_res = [0 0 0 0 0];
 
-time = 0;
 % Uses global variables: update, update_period, acc_buffer, and gyro_buffer
 while 1
     buffer = read(device, 100, 'int16');
@@ -41,8 +37,7 @@ while 1
     gyro = buffer(:,5:7) * (2000 * pi / ((2^15) * 180)) - gyro_offset; % rad/s
     acc = buffer(:,2:4) * 2 * 9.81 / (2^15) - acc_offset; % g-forces
     q = FUSE(acc, gyro);
-    ang = [(time:0.01:time+0.09)' eulerd(q, "XYZ", 'frame')];
-    assignin('base', 'ang', ang)
+    ang = eulerd(q, "XYZ", 'frame');
     
     res_buffer = buffer(1, :);
     res = [0 0 0 0 0];
@@ -63,6 +58,5 @@ while 1
     inputs = bitshift(int16(inputs), -8, 'int16'); % shift upper bits to lower place
     
     fprintf("Orientation: %f, %f, %f | Res: %f, %f, %f, %f, %f | Input: %d\n",...
-    ang(1, 2), ang(1, 3), ang(1, 4), norm_res(1), norm_res(2), norm_res(3), norm_res(4), norm_res(5), inputs);
-    time = time + 0.01;
+    ang(1), ang(2), ang(3), norm_res(1), norm_res(2), norm_res(3), norm_res(4), norm_res(5), inputs);
 end
