@@ -19,21 +19,21 @@ void led_setup() {
  * Toggle LED 1 (topmost LED with Micro USB facing down)
  */
 inline void d1_toggle() {
-    P2OUT ^= ~BIT5;
+    P2OUT ^= BIT5;
 }
 
 /**
  * Toggle LED 2 (middle LED with Micro USB facing down)
  */
 inline void d2_toggle() {
-    P2OUT ^= ~BIT4;
+    P2OUT ^= BIT4;
 }
 
 /**
  * Toggle LED 3 (bottom LED with Micro USB facing down)
  */
 inline void d3_toggle() {
-    P2OUT ^= ~BIT2;
+    P2OUT ^= BIT2;
 }
 
 /**
