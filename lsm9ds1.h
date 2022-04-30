@@ -13,8 +13,8 @@
 #define CHIP_ADDR 0x6b
 #define WHO_AM_I 0x0f
 #define CTRL_REG1_G 0x10
-#define GYRO_OUT_ADDR 0x18
-#define ACC_OUT_ADDR 0x28
+#define GYRO_OUT_ADDR ((uint8_t) 0x18)
+#define ACC_OUT_ADDR ((uint8_t) 0x28)
 
 #ifndef LSM9DS1_H_
 #define LSM9DS1_H_

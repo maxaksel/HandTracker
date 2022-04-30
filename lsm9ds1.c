@@ -8,9 +8,9 @@
 #include "lsm9ds1.h"
 
 uint8_t gyro_data_send[] = {GYRO_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+volatile uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint8_t acc_data_send[] = {ACC_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+volatile uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /**
  * Sets up LSM9DS1 to read accelerometer and gyro. Writing to CTRL_REG1_G enables
@@ -42,9 +42,13 @@ void get_acc_gyro(int16_t* data) {
     P2OUT &= ~CS_AG; // pull A/G chip select down
 
     while (!spi_free());
-    spi_start_asynch_transmission(gyro_data_send, gyro_data_recv, 6);
+    __delay_cycles(15);
+    spi_start_asynch_transmission(acc_data_send, acc_data_recv, 7);
     while (!spi_free());
-    spi_start_asynch_transmission(acc_data_send, acc_data_recv, 6);
+    P2OUT |= CS_AG; // pull A/G chip select up
+    __delay_cycles(15);
+    P2OUT &= ~CS_AG; // pull A/G chip select down
+    spi_start_asynch_transmission(gyro_data_send, gyro_data_recv, 7);
     while (!spi_free());
 
     // Read acc data
