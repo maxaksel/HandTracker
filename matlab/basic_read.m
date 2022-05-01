@@ -14,13 +14,14 @@ while ~isequal(alignment_buffer, [12*16+10 15*16+14])
 end
 
 disp("Aligned.");
-buffer = read(device, 9, 'int16'); % maintain alignment
+buffer = read(device, 12, 'int16'); % maintain alignment
 % Read data from glove
 while 1
-    buffer = read(device, 10, 'int16');
+    buffer = read(device, 13, 'int16');
     % disp(buffer(1));
     gyro = buffer(5:7) * 2000 / (2^15); % DPS
     acc = buffer(2:4) * 2 * 9.8 / (2^15); % g-forces
+    mag = buffer(11:13) * 4 / (2^15) ; % gauss
     % disp(buffer);
     
     res = [0 0 0 0 0];
@@ -43,6 +44,7 @@ while 1
     % disp(norm(acc));
     % disp(gyro);
     % disp(res);
+    disp(gyro);
     % fprintf("Gyro: %f, %f, %f | Acc: %f, %f, %f | Res: %d, %d, %d, %d, %d | Input: %d\n",...
     % gyro(1), gyro(2), gyro(3), acc(1), acc(2), acc(3), res(1), res(2), res(3), res(4), res(5), inputs);
 end

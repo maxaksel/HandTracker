@@ -11,6 +11,8 @@ uint8_t gyro_data_send[] = {GYRO_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 volatile uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint8_t acc_data_send[] = {ACC_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 volatile uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t mag_data_send[] = {MAG_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+volatile uint8_t mag_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /**
  * Sets up LSM9DS1 to read accelerometer and gyro. Writing to CTRL_REG1_G enables
@@ -20,6 +22,7 @@ volatile uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 void setup_acc_gyro() {
     spi_clk_passive_high();
 
+    // Set up ACC and GYRO
     P2OUT &= ~CS_AG; // pull A/G chip select down
 
     uint8_t ctrl_send[] = {CTRL_REG1_G, 0xD9};
@@ -28,6 +31,40 @@ void setup_acc_gyro() {
     while (!spi_free());
 
     P2OUT |= CS_AG; // pull A/G chip select up
+}
+
+void setup_mag() {
+    // Set up MAG
+    P2OUT &= ~CS_M; // pull M chip select down
+    uint8_t ctrl_send[] = {CTRL_REG1_M, 0xB4};
+    uint8_t ctrl_recv[] = {0x0, 0x0};
+    spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
+    while (!spi_free());
+    P2OUT |= CS_M;
+    __delay_cycles(15);
+
+    P2OUT &= ~CS_M; // pull M chip select down
+    ctrl_send[0] = CTRL_REG2_M;
+    ctrl_send[1] = 0x00;
+    spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
+    while (!spi_free());
+    P2OUT |= CS_M;
+    __delay_cycles(15);
+
+    P2OUT &= ~CS_M; // pull M chip select down
+    ctrl_send[0] = CTRL_REG3_M;
+    ctrl_send[1] = 0x00;
+    spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
+    while (!spi_free());
+    P2OUT |= CS_M;
+    __delay_cycles(15);
+
+    P2OUT &= ~CS_M; // pull M chip select down
+    ctrl_send[0] = CTRL_REG4_M;
+    ctrl_send[1] = 0x08;
+    spi_start_asynch_transmission(ctrl_send, ctrl_recv, 2);
+    while (!spi_free());
+    P2OUT |= CS_M;
 }
 
 /**
@@ -68,4 +105,29 @@ void get_acc_gyro(int16_t* data) {
     data[5] |= gyro_data_recv[6] << 8;
 
     P2OUT |= CS_AG; // pull A/G chip select up
+}
+
+/**
+ * Get magnetometer data from IMU and load it into a buffer of int16.
+ *
+ * @param data buffer.
+ */
+void get_mag(int16_t* data) {
+    spi_clk_passive_high();
+
+    P2OUT &= ~CS_M; // pull M chip select down
+
+    while (!spi_free());
+    __delay_cycles(15);
+    spi_start_asynch_transmission(mag_data_send, mag_data_recv, 7);
+    while (!spi_free());
+    P2OUT |= CS_M; // pull M chip select up
+
+    // Read magnetometer data
+    data[0] = mag_data_recv[1];
+    data[0] |= mag_data_recv[2] << 8;
+    data[1] = mag_data_recv[3];
+    data[1] |= mag_data_recv[4] << 8;
+    data[2] = mag_data_recv[5];
+    data[2] |= mag_data_recv[6] << 8;
 }

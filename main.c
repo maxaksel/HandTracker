@@ -18,7 +18,7 @@
 int val;
 uint8_t retval;
 
-uint8_t packet[20];
+uint8_t packet[26];
 
 
 
@@ -35,6 +35,7 @@ int main(void)
 	setup_resistors();
 	//setup LSM
 	setup_acc_gyro();
+	setup_mag();
 	//setup UART
 	uart_init();
 	//setup LEDs
@@ -47,6 +48,7 @@ int main(void)
 	a0_setup();
 	//set to continuous running, 50 Hz
 	a0_start(50); //run at 50 hz
+	d1_on();
 	packet[0] = 0xCA; //packet header
     packet[1] = 0xFE; //packet header
 	while (1) {
@@ -60,7 +62,9 @@ int main(void)
 	    request_resistor_data();
 	    //get buttons
 	    packet[19] = (uint8_t) get_button_pressed();
+	    // get mag
+	    get_mag((int16_t *) &packet[20]);
 	    //send packet to host
-	    uart_send_bytes(packet, 20);
+	    uart_send_bytes(packet, 26);
 	}
 }
