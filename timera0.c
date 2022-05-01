@@ -17,7 +17,7 @@
  * Set up A0 timer module in continuous mode with SMCLK as a trigger.
  */
 void a0_setup() {
-    TACTL = TASSEL_2 + MC_2;
+    TACTL = TASSEL_2 + MC_1;
 }
 
 /**
