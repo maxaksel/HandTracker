@@ -23,7 +23,7 @@ volatile uint8_t data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 void setup_resistors() {
     spi_clk_passive_low();
     P2OUT &= ~CS_A; // pull ADC chip-select low
-    spi_start_asynch_transmission(setup_send, setup_recv, 1);
+    spi_start_asynch_transmission(setup_send, (uint8_t *) setup_recv, 1);
     P2OUT |= CS_A; // pull ADC chip-select high
     while (!spi_free());
 }
@@ -36,7 +36,7 @@ void setup_resistors() {
 void request_resistor_data() {
     spi_clk_passive_low();
     P2OUT &= ~CS_A; // pull ADC chip-select low
-    spi_start_asynch_transmission(request_send, request_recv, 1);
+    spi_start_asynch_transmission(request_send, (uint8_t *) request_recv, 1);
     while (!spi_free());
     P2OUT |= CS_A; // pull ADC chip-select high
 }
@@ -52,7 +52,7 @@ void request_resistor_data() {
 void read_resistor_data(int8_t* data) {
     spi_clk_passive_low();
     P2OUT &= ~CS_A; // pull ADC chip-select low
-    spi_start_asynch_transmission(data_send, data_recv, 10);
+    spi_start_asynch_transmission(data_send, (uint8_t *) data_recv, 10);
     while (!spi_free());
     P2OUT |= CS_A; // pull ADC chip-select high
 

@@ -126,7 +126,7 @@ int uart_send_bytes(uint8_t *data, int num_bytes){
     int i, bytes_add;
     //temporarily disable uart interrupts
     IE2 &= ~(BIT1 + BIT0); //disable interrupts before accessing tx_top & tx_level
-    uint8_t *bottom = tx_top + tx_level;
+    uint8_t *bottom = ((uint8_t *) tx_top) + tx_level;
     if (bottom >= (tx_buffer + UART_BUFFER_DEPTH))
         bottom -= UART_BUFFER_DEPTH;
     bytes_add = (num_bytes > (UART_BUFFER_DEPTH - tx_level)) ? (UART_BUFFER_DEPTH - tx_level) : num_bytes; //calculate bytes to add to buffer
@@ -161,7 +161,7 @@ int uart_receive_bytes(uint8_t *data, int num_bytes){
     int i;
     IE2 &= ~(BIT1 + BIT0); //disable interrupts before accessing tx_top & tx_level
     unsigned int bytes_receive = (num_bytes > rx_level) ? (rx_level) : num_bytes;
-    uint8_t *rx_top = (rx_bottom - rx_level);
+    uint8_t *rx_top = ((uint8_t *) rx_bottom) - rx_level;
     IE2 |= (BIT1 + BIT0); //re-enable interrupts
     if(rx_top < rx_buffer)
         rx_top -= UART_BUFFER_DEPTH;

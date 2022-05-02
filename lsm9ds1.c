@@ -11,7 +11,7 @@ uint8_t gyro_data_send[] = {GYRO_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 volatile uint8_t gyro_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 uint8_t acc_data_send[] = {ACC_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 volatile uint8_t acc_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-uint8_t mag_data_send[] = {MAG_OUT_ADDR | 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+uint8_t mag_data_send[] = {MAG_OUT_ADDR | 0x80 | 0x40, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 volatile uint8_t mag_data_recv[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /**
@@ -34,6 +34,7 @@ void setup_acc_gyro() {
 }
 
 void setup_mag() {
+    spi_clk_passive_high();
     // Set up MAG
     P2OUT &= ~CS_M; // pull M chip select down
     uint8_t ctrl_send[] = {CTRL_REG1_M, 0xB4};
@@ -80,12 +81,12 @@ void get_acc_gyro(int16_t* data) {
 
     while (!spi_free());
     __delay_cycles(15);
-    spi_start_asynch_transmission(acc_data_send, acc_data_recv, 7);
+    spi_start_asynch_transmission((uint8_t *) acc_data_send,(uint8_t *) acc_data_recv, 7);
     while (!spi_free());
     P2OUT |= CS_AG; // pull A/G chip select up
     __delay_cycles(15);
     P2OUT &= ~CS_AG; // pull A/G chip select down
-    spi_start_asynch_transmission(gyro_data_send, gyro_data_recv, 7);
+    spi_start_asynch_transmission((uint8_t *) gyro_data_send,(uint8_t *) gyro_data_recv, 7);
     while (!spi_free());
 
     // Read acc data
@@ -119,7 +120,7 @@ void get_mag(int16_t* data) {
 
     while (!spi_free());
     __delay_cycles(15);
-    spi_start_asynch_transmission(mag_data_send, mag_data_recv, 7);
+    spi_start_asynch_transmission(mag_data_send,(uint8_t *) mag_data_recv, 7);
     while (!spi_free());
     P2OUT |= CS_M; // pull M chip select up
 
